@@ -3,18 +3,96 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  <img width="300" alt="Angular Logo"
+       src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div *ngIf="!enableTodoList">
+  <form #userlogin="ngForm" (ngSubmit)="onClickSubmit(userlogin.value)">
+    <div class="form-group">
+      <label for="username">Usuario</label>
+      <input type="username" name="username" class="form-control" id="username" aria-describedby="emailHelp"
+             placeholder="Enter username" ngModel>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" class="form-control" id="password" placeholder="Password" ngModel>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+<div *ngIf="enableTodoList">
+  <h3>
+    This are the task in your list:
+  </h3>
+  <div>
+    <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Add Task</button>
+  </div>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form #taskCreation="ngForm" (ngSubmit)="createTask(taskCreation.value)">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+              <label for="title">Title</label>
+            </div>
+            <div class="col-sm">
+              <input id="title" class="form-control" name="title" ngModel>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <label for="days">Days</label>
+            </div>
+            <div class="col-sm">
+              <input id="days" class="form-control" name="days" ngModel>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <label for="description">Description</label>
+            </div>
+            <div class="col-sm">
+              <input id="description" class="form-control" name="description" ngModel>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
+    </div>
+  </ng-template>
+
+  <div>
+    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+      <ngb-panel *ngFor="let item of user.items" title="{{item.title}}">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+              <div class="d-flex w-100 justify-content-between">
+                <div type="row">
+                  <small>{{item.last_update}} days</small>
+                </div>
+                <div type="row">
+                  <small>{{item.days}} days</small>
+                </div>
+              </div>
+              <p> {{item.description}}</p>
+            </a>
+          </div>
+          <div class="btn-group" role="group" aria-label="Delete Task">
+            <button type="button" class="btn btn-danger" (click)="deleteTask(item.id)">Delete</button>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+</div>
 
